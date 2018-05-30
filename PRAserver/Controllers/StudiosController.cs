@@ -13,6 +13,9 @@ using PRAserver.Models;
 
 namespace PRAserver.Controllers
 {
+    /// <summary>
+    /// Enables CRUD operations on Studios stored in the database
+    /// </summary>
     public class StudiosController : ApiController
     {
         private PRAserverContext db = new PRAserverContext();
@@ -22,7 +25,12 @@ namespace PRAserver.Controllers
         {
             return db.Studios;
         }
-
+        /// <summary>
+        /// Sends paged data by page size and page number
+        /// </summary>
+        /// <param name="pageSize">Amount of items on each page</param>
+        /// <param name="pageNumber">Which page to send</param>
+        /// <returns></returns>
         // GET: api/studios/pageSize/pageNumber 
         [Route("api/studios/{pageSize:int}/{pageNumber:int}")]
         public IHttpActionResult Get(int pageSize, int pageNumber)

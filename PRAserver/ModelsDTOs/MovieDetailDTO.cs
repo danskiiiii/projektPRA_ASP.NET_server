@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace PRAserver.Views
+namespace PRAserver.ModelsDTOs
 {
-    public class MovieView
+    public class MovieDetailDTO
     {
         public int MovieId { get; set; }
         public string Title { get; set; }

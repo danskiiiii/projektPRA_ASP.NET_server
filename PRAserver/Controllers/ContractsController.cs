@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PRAserver.Models;
-using PRAserver.Views;
+using PRAserver.ModelsDTOs;
 
 namespace PRAserver.Controllers
 {
@@ -32,7 +32,7 @@ namespace PRAserver.Controllers
             var totalPages = Math.Ceiling((double)totalCount/pageSize);
 
             var items = from b in db.Contracts
-                        select new ContractView()
+                        select new ContractDetailDTO()
                         {
                             ContractId = b.ContractId,
                             Duration = b.Duration,

@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PRAserver.Models;
-using PRAserver.Views;
+using PRAserver.ModelsDTOs;
+
 namespace PRAserver.Controllers
 {
     public class FilmCrewsController : ApiController
@@ -31,15 +32,13 @@ namespace PRAserver.Controllers
             var totalPages = Math.Ceiling((double)totalCount / pageSize);
 
             var items = from b in db.FilmCrews
-                        select new FilmCrewView()
+                        select new FilmCrewDetailDTO()
                         {
                             CrewMemberId=b.CrewMemberId,
                             Name=b.Name,
                             Firstname=b.Firstname,
                             Age=b.Age,
-                            Position=b.Position.PositionName
-
-                            
+                            Position=b.Position.PositionName                            
                         };
 
             var itemsSorted = items.OrderBy(o => o.CrewMemberId).Skip((pageNumber - 1) * pageSize)

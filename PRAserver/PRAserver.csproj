@@ -35,6 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>App_Data\XmlDocument.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -194,6 +195,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
+    <Compile Include="Controllers\StatsController.cs" />
     <Compile Include="Controllers\StudiosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -208,11 +210,12 @@
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\PRAserverContext.cs" />
+    <Compile Include="Models\Stats.cs" />
     <Compile Include="Models\Studio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\ContractView.cs" />
-    <Compile Include="Views\FilmCrewView.cs" />
-    <Compile Include="Views\MovieView.cs" />
+    <Compile Include="ModelsDTOs\ContractDetailDTO.cs" />
+    <Compile Include="ModelsDTOs\FilmCrewDetailDTO.cs" />
+    <Compile Include="ModelsDTOs\MovieDetailDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

@@ -10,29 +10,13 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PRAserver.Models;
-using PRAserver.Views;
+using PRAserver.ModelsDTOs;
 
 namespace PRAserver.Controllers
 {
     public class MoviesController : ApiController
     {
-        private PRAserverContext db = new PRAserverContext();
-
-
-        // GET: api/stats 
-        [Route("api/stats")]
-        public List<int> GetStats()
-        {
-            List<int> itemCount = new List<int>
-            {   db.Movies.Count(),
-                db.Contracts.Count(),
-                db.FilmCrews.Count(),
-                db.Positions.Count(),
-                db.Studios.Count()                
-            };
-
-            return  itemCount;
-        }
+        private PRAserverContext db = new PRAserverContext();     
 
 
         // GET: api/Movies
@@ -49,7 +33,7 @@ namespace PRAserver.Controllers
             var totalPages = Math.Ceiling((double)totalCount / pageSize);
 
             var items = from b in db.Movies
-                        select new MovieView()
+                        select new MovieDetailDTO()
                         {
                             MovieId = b.MovieId,
                             Title = b.Title,
