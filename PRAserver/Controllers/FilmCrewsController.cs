@@ -28,7 +28,11 @@ namespace PRAserver.Controllers
         [Route("api/filmcrews/{pageSize:int}/{pageNumber:int}")]
         public IHttpActionResult Get(int pageSize, int pageNumber)
         {
-            var totalCount = this.db.FilmCrews.Count();
+            try
+            {
+                if (pageSize < 1 || pageNumber < 1) return BadRequest("Error. Page indexes start at 1.");
+
+                var totalCount = this.db.FilmCrews.Count();
             var totalPages = Math.Ceiling((double)totalCount / pageSize);
 
             var items = from b in db.FilmCrews
@@ -53,13 +57,21 @@ namespace PRAserver.Controllers
             //    TotalPages = totalPages,
             //    Books = booksSorted  
             //};
+            if (itemsSorted.Count == 0) { throw new Exception("Query out of bounds. Empty result."); }
+
             return Ok(itemsSorted);
+            }
+            catch (Exception exc)
+            {
+               return BadRequest("Error. " + exc.Message);
+            }
+
         }
 
 
 
-        // GET: api/FilmCrews/5
-        [ResponseType(typeof(FilmCrew))]
+// GET: api/FilmCrews/5
+[ResponseType(typeof(FilmCrew))]
         public async Task<IHttpActionResult> GetFilmCrew(int id)
         {
             FilmCrew filmCrew = await db.FilmCrews.FindAsync(id);

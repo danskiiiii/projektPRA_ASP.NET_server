@@ -25,6 +25,7 @@ namespace PRAserver.Controllers
         {
             return db.Studios;
         }
+
         /// <summary>
         /// Sends paged data by page size and page number
         /// </summary>
@@ -35,14 +36,26 @@ namespace PRAserver.Controllers
         [Route("api/studios/{pageSize:int}/{pageNumber:int}")]
         public IHttpActionResult Get(int pageSize, int pageNumber)
         {
-            var totalCount = this.db.Studios.Count();
+            try
+            {
+                if (pageSize < 1 || pageNumber < 1) return BadRequest("Error. Page indexes start at 1.");
+
+                var totalCount = this.db.Studios.Count();
             var totalPages = Math.Ceiling((double)totalCount / pageSize);
             var items = db.Studios;
 
             var itemsSorted = items.OrderBy(o => o.StudioId).Skip((pageNumber - 1) * pageSize)
                                     .Take(pageSize)
                                     .ToList();
-            return Ok(itemsSorted);
+
+                if (itemsSorted.Count == 0) { throw new Exception("Query out of bounds. Empty result."); }
+
+                return Ok(itemsSorted);
+            }
+            catch (Exception exc)
+            {
+                return BadRequest("Error. " + exc.Message);
+            }
         }
 
         // GET: api/Studios/5

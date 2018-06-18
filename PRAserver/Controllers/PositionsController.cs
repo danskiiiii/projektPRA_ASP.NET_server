@@ -27,16 +27,26 @@ namespace PRAserver.Controllers
         [Route("api/positions/{pageSize:int}/{pageNumber:int}")]
         public IHttpActionResult Get(int pageSize, int pageNumber)
         {
-            var totalCount = this.db.Positions.Count();
+            try
+            {
+                if (pageSize < 1 || pageNumber < 1) return BadRequest("Error. Page indexes start at 1.");
+                var totalCount = this.db.Positions.Count();
             var totalPages = Math.Ceiling((double)totalCount / pageSize);
             var items = db.Positions;                       
 
             var itemsSorted = items.OrderBy(o => o.PositionId).Skip((pageNumber - 1) * pageSize)
                                     .Take(pageSize)
                                     .ToList();
-            return Ok(itemsSorted);
-        }
 
+                if (itemsSorted.Count == 0) { throw new Exception("Query out of bounds. Empty result."); }
+
+                return Ok(itemsSorted);
+            }
+            catch (Exception exc)
+            {
+                return BadRequest("Error. " + exc.Message);
+            }
+        }
 
         // GET: api/Positions/5
         [ResponseType(typeof(Position))]

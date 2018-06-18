@@ -28,23 +28,35 @@ namespace PRAserver.Controllers
         [Route("api/contracts/{pageSize:int}/{pageNumber:int}")]
         public IHttpActionResult Get(int pageSize, int pageNumber)
         {
-            var totalCount = this.db.Contracts.Count();
-            var totalPages = Math.Ceiling((double)totalCount/pageSize);
+            try
+            {
+                if(pageSize < 1 || pageNumber < 1) return BadRequest("Error. Page indexes start at 1.");
 
-            var items = from b in db.Contracts
-                        select new ContractDetailDTO()
-                        {
-                            ContractId = b.ContractId,
-                            Duration = b.Duration,
-                            Salary = b.Salary,
-                            CrewMember = b.FilmCrew.Firstname +" "+ b.FilmCrew.Name,
-                            MovieTitle = b.Movie.Title
-                        };
+                var totalCount = this.db.Contracts.Count();
+                var totalPages = Math.Ceiling((double)totalCount / pageSize);
 
-            var itemsSorted = items.OrderBy(o => o.ContractId).Skip((pageNumber - 1) * pageSize)
-                                    .Take(pageSize)
-                                    .ToList();
-            return Ok(itemsSorted);
+                var items = from b in db.Contracts
+                            select new ContractDetailDTO()
+                            {
+                                ContractId = b.ContractId,
+                                Duration = b.Duration,
+                                Salary = b.Salary,
+                                CrewMember = b.FilmCrew.Firstname + " " + b.FilmCrew.Name,
+                                MovieTitle = b.Movie.Title
+                            };
+
+                var itemsSorted = items.OrderBy(o => o.ContractId).Skip((pageNumber - 1) * pageSize)
+                                        .Take(pageSize)
+                                        .ToList();
+
+                if (itemsSorted.Count == 0) { throw new Exception ("Query out of bounds. Empty result.") ; }
+
+                return Ok(itemsSorted);
+            }
+            catch (Exception exc)
+            {
+                return BadRequest("Error. " + exc.Message);
+            }
         }
 
 
